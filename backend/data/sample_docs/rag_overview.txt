@@ -1,0 +1,40 @@
+Retrieval-Augmented Generation (RAG): An Overview
+
+What is RAG?
+Retrieval-Augmented Generation (RAG) is a technique that combines a large language
+model (LLM) with an external knowledge source. Instead of relying only on the
+information baked into the model's weights during training, a RAG system retrieves
+relevant documents at query time and feeds them to the model as context. The model
+then generates an answer grounded in that retrieved evidence.
+
+Why RAG matters.
+Plain LLMs have three well-known weaknesses: they hallucinate facts, their knowledge
+is frozen at training time, and they cannot cite sources. RAG addresses all three.
+Because the answer is generated from freshly retrieved documents, the system can stay
+up to date, point back to the exact source passage, and is far less likely to invent
+information that is not supported by the documents.
+
+The RAG pipeline.
+A typical RAG pipeline has two phases. The first is indexing, done once ahead of time:
+documents are split into smaller chunks, each chunk is converted into a numerical
+vector (an embedding), and those vectors are stored in a vector database. The second
+phase happens at query time: the user's question is embedded with the same model, the
+vector database returns the most similar chunks, and those chunks plus the question are
+passed to the LLM to produce the final answer.
+
+Chunking.
+Documents are split into chunks because embeddings work best on focused passages and
+because LLMs have a limited context window. A common strategy is to use a chunk size of
+around 1000 characters with a 200 character overlap. The overlap ensures that a sentence
+straddling a chunk boundary is not lost.
+
+Embeddings and similarity.
+An embedding model maps text into a high-dimensional vector such that semantically
+similar text lands close together. Retrieval works by computing the similarity (often
+cosine similarity) between the question vector and every chunk vector, then returning the
+top-k closest chunks. A typical value of k is 4.
+
+Common failure modes.
+RAG quality depends heavily on retrieval quality. If the retriever returns irrelevant
+chunks, the LLM has nothing useful to work with. Good chunking, a strong embedding model,
+and a well-tuned k value are the main levers for improving a RAG system.

@@ -1,0 +1,32 @@
+AI Tooling Notes: LangChain, FAISS, and OpenAI
+
+LangChain.
+LangChain is an open-source orchestration framework for building applications powered by
+language models. It provides standard building blocks -- document loaders, text splitters,
+embedding wrappers, vector store integrations, prompt templates, and model wrappers -- and
+lets developers compose them into pipelines. Its main value is reducing the boilerplate
+needed to wire an LLM up to external data and tools. The trade-off is a learning curve and
+frequent API changes between major versions.
+
+FAISS.
+FAISS (Facebook AI Similarity Search) is an open-source library for efficient similarity
+search over dense vectors. It runs locally, is free, and is extremely fast for in-memory
+search over millions of vectors. Because it is a library rather than a managed service, it
+has no network cost and no per-record pricing, which makes it ideal for prototypes and
+single-machine deployments. Its limitation is that it is not a distributed database: scaling
+across many machines or adding live multi-user persistence requires extra engineering, which
+is where a managed service like Pinecone or Weaviate becomes attractive.
+
+OpenAI.
+OpenAI provides hosted large language models such as GPT-4o, along with embedding models
+like text-embedding-3-small. The models are accessed through a simple HTTP API and are
+known for high generation quality and reliability. Pricing is pay-per-token, so cost scales
+with usage. For embeddings, text-embedding-3-small is inexpensive and well suited to RAG.
+The main considerations are ongoing API cost at scale and data privacy, since text is sent
+to OpenAI's servers; sensitive workloads may prefer Azure OpenAI or a locally hosted model.
+
+Choosing a vector store.
+For a prototype, FAISS is usually the right default: zero cost, no setup, and fast. Move to
+a managed vector database when you need horizontal scaling, high availability, live updates
+from many users, or metadata filtering at large scale. The retrieval interface stays the
+same, so swapping the store later is a contained change.
