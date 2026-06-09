@@ -16,3 +16,9 @@ frontend/.env
 # OS / editor
 .DS_Store
 *.log
+
+# Local planning / submission notes
+PLAN.md
+REPORT.md
+start.sh
+usecase.md
